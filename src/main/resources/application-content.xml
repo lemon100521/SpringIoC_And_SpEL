@@ -7,22 +7,117 @@ http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean  id="circle" class="com.dyy.springcore.common.impl.Circle">
-        <constructor-arg name="radius" value="10"/>
-    </bean>
-    <bean id="rectangle" class="com.dyy.springcore.common.impl.Rectangle">
-        <constructor-arg name="height" value="10"/>
-        <constructor-arg name="width" value="10"/>
-    </bean>
-    <bean id="triangle" class="com.dyy.springcore.common.impl.Triangle">
-        <constructor-arg name="a" value="10"/>
-        <constructor-arg name="b" value="10"/>
-        <constructor-arg name="c" value="10"/>
+    <!--构造方法实例化-->
+    <bean id="exampleBean" class="com.dyy.springcore.ExampleBean"/>
+    <bean id="exampleBean2" class="com.dyy.springcore.ExampleBean2">
+        <constructor-arg value="dyy"/>
     </bean>
 
-    <bean id="compute" class="com.dyy.springcore.common.xml.XmlShapeCompute">
-        <property name="triangle" ref="triangle"/>
-        <property name="rectangle" ref="rectangle"/>
-        <property name="circle" ref="circle"/>
+    <!--静态工厂方法实例化-->
+    <bean id="clientService" class="com.dyy.springcore.ClientService" factory-method="creatInstance"/>
+
+    <!--实例工厂方法实例化-->
+    <bean id="clientServerLocater" class="com.dyy.springcore.DefaultClientServerLocater"/>
+    <bean id="clientService2" factory-bean="clientServerLocater" factory-method="getClientService"/>
+
+    <!--构造方法参数的装配-->
+    <!--1.Bean引用-->
+    <bean id="baz" class="com.dyy.springcore.Baz"/>
+    <bean class="com.dyy.springcore.Bar" id="bar"/>
+    <bean id="foo" class="com.dyy.springcore.Foo">
+        <constructor-arg ref="bar"/>
+        <constructor-arg ref="baz"/>
+    </bean>
+
+    <!--根据参数类型-->
+    <bean  id="foo2" class="com.dyy.springcore.Foo">
+        <constructor-arg type="com.dyy.springcore.Baz" ref="baz"/>
+        <constructor-arg type="com.dyy.springcore.Bar" ref="bar"/>
+    </bean>
+
+    <bean id="bean32" class="com.dyy.springcore.ExampleBean3">
+        <constructor-arg type="java.lang.String" value="dyy"/>
+        <constructor-arg type="int" value="201512"/>
+    </bean>
+
+    <!--根据参数位置-->
+    <bean id="bean3" class="com.dyy.springcore.ExampleBean3">
+        <constructor-arg index="0" value="dyy"/>
+        <constructor-arg index="1" value="201512"/>
+    </bean>
+    <!--根据参数名称-->
+    <bean id="bean33" class="com.dyy.springcore.ExampleBean3">
+        <constructor-arg name="id" value="201412"/>
+        <constructor-arg name="name" value="lms"/>
+    </bean>
+
+    <!--Setter方法的装配-->
+    <bean id="circle" class="com.dyy.springcore.Circle"/>
+    <bean id="complexShape" class="com.dyy.springcore.ComplexShape">
+        <property name="shape" ref="circle"/>
+    </bean>
+
+    <!--直接赋值装配，基本类型和String类型-->
+    <bean id="basicDataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/memo"/>
+        <property name="username" value="root"/>
+        <property name="password" value="100521"/>
+        <property name="maxTotal" value="100"/>
+    </bean>
+
+    <!--idref和ref元素-->
+    <bean id="config" class="com.dyy.springcore.IdRefConfig">
+        <constructor-arg>
+            <idref bean="bar"/>
+        </constructor-arg>
+    </bean>
+
+    <!--内部bean-->
+    <bean id="foo3" class="com.dyy.springcore.Foo">
+        <constructor-arg>
+            <bean class="com.dyy.springcore.Bar"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="com.dyy.springcore.Baz"/>
+        </constructor-arg>
+    </bean>
+
+    <!--Collection装配-->
+    <bean id="complexObject" class="com.dyy.springcore.ComplexObject">
+        <property name="properties">
+            <props>
+                <prop key="dyy">dyy@qq.com</prop>
+                <prop key="xl">xl@qq.com</prop>
+            </props>
+        </property>
+        <property name="list">
+            <list>
+                <value>zhangsan</value>
+                <value>18</value>
+                <ref bean="foo3"/>
+            </list>
+        </property>
+        <property name="set">
+            <set>
+                <value type="java.lang.String">zhangsan</value>
+                <value>20</value>
+                <value>js</value>
+            </set>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="2014" value="lemon"/>
+                <entry key="10" value-ref="foo"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--null和空字符串值-->
+    <bean id="bean4" class="com.dyy.springcore.ExampleBean4">
+        <property name="name" value="dyy"/>
+        <property name="id">
+            <null/>
+        </property>
     </bean>
 </beans>
