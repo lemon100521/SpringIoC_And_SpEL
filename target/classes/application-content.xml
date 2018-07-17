@@ -120,4 +120,47 @@ http://www.springframework.org/schema/context/spring-context.xsd">
             <null/>
         </property>
     </bean>
+
+    <!--延迟初始化-->
+    <bean id="lazyExampleBean" class="com.dyy.springcore.LazyExampleBean" lazy-init="true"/>
+
+    <!--自动装配-->
+    <bean id="customer" class="com.dyy.springcore.auto.Customer " autowire="constructor"/>
+    <bean id="customer2" class="com.dyy.springcore.auto.Customer2" autowire="byName"/>
+
+    <!--作用域-->
+    <bean id="bean42" class="com.dyy.springcore.ExampleBean4" scope="singleton"/>
+    <bean id="bean43" class="com.dyy.springcore.ExampleBean4" scope="prototype"/>
+
+    <!--自定义作用域-->
+    <bean id="scope" class="com.dyy.springcore.auto.SingleThreadScope"/>
+
+    <!--配置方式设置自定义作用域-->
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <map>
+                <entry key="thread" value-ref="scope"/>
+            </map>
+        </property>
+    </bean>
+    <!--配置用于多线程验证的类-->
+    <bean id="bean44" class="com.dyy.springcore.ExampleBean4" scope="thread">
+        <property name="name" value="lemon"/>
+        <property name="id">
+            <null/>
+        </property>
+    </bean>
+
+    <!--与注解进行配置等同-->
+    <!--<bean class="com.dyy.springcore.auto.Circle"/>-->
+
+    <!--使用注解进行配置时需要加入-->
+    <!--<contex:component-scan base-package="com.dyy.springcore"/>-->
+
+    <!--XMl对java.lang.Math产生随机数的方法进行配置-->
+    <bean id="guessNumber" class="com.dyy.springcore.spel.GuessNumber" scope="prototype">
+        <property name="num" value="#{T(java.lang.Math).random()}"/>
+    </bean>
+
+
 </beans>

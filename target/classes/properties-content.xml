@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--使用@Component要开启自动扫描-->
+    <context:component-scan base-package="com.dyy.springcore.spel"/>
+    <util:properties id="properties" location="database.properties"/>
+
+    <!--使用PropertyPlaceholderConfigure配置属性文件 单个资源文件-->
+    <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="location" value="database.properties"/>
+    </bean>
+
+    <!--使用PropertyPlaceholderConfigure配置属性文件 多个资源文件-->
+    <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="locations">
+            <list>
+                <value>file:D://database.properties</value>
+                <value>classpath:database.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!--使用 <context:property-placeholder> 配置属性文件-->
+    <context:property-placeholder file-encoding="UTF-8" location="classpath:database.properties"/>
+
+    <!--Spring中内置Bean-->
+    <bean id="systemPropertiesBean" class="com.dyy.springcore.spel.SystemPropertiesBean">
+        <property name="classPath" value="#{systemProperties['java.class.path']}"/>
+        <property name="javaHome" value="#{systemProperties['java.home']}"/>
+        <property name="javaVersion" value="#{systemProperties['java.version']}"/>
+        <property name="osName" value="#{systemProperties['os.name']}"/>
+    </bean>
+
+</beans>

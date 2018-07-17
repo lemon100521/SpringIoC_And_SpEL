@@ -1,5 +1,7 @@
 package com.dyy.springcore;
 
+import com.dyy.springcore.auto.Customer;
+import com.dyy.springcore.auto.Customer2;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -25,7 +27,7 @@ public class IoCXmlApplication {
         System.out.println(clientService);
 //通过实例工厂方法实例化
         DefaultClientServerLocater defaultClientServerLocater = (DefaultClientServerLocater) context.getBean("clientServerLocater");
-        System.out.println(defaultClientServerLocater);
+                 System.out.println(defaultClientServerLocater);
 
 //Bean的依赖装配
 // 构造方法参数装配
@@ -65,5 +67,23 @@ public class IoCXmlApplication {
         //null和空字符串值
         ExampleBean4 exampleBean4 = (ExampleBean4) context.getBean("bean4");
         System.out.println(exampleBean4);
+
+        LazyExampleBean lazyExampleBean = (LazyExampleBean) context.getBean("lazyExampleBean");
+        System.out.println(lazyExampleBean);
+
+        Customer customer = (Customer) context.getBean("customer");
+        System.out.println(customer);
+        Customer2 customer2 = (Customer2) context.getBean("customer2");
+        System.out.println(customer2);
+
+        for(int i = 0; i < 3;i++){
+            ExampleBean4 exampleBean41 = (ExampleBean4) context.getBean("bean42");
+            System.out.println(exampleBean41.hashCode());
+        }
+        System.out.println();
+        for(int i = 0; i < 3;i++){
+            ExampleBean4 exampleBean42 = (ExampleBean4) context.getBean("bean43");
+            System.out.println(exampleBean42.hashCode());
+        }
     }
 }

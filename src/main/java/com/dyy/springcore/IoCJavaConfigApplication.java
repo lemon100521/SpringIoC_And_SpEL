@@ -10,5 +10,4 @@ public class IoCJavaConfigApplication {
     public String hello(){
         return "hello";
     }
-
 }
